@@ -1,0 +1,51 @@
+Stuff I would be interested in from the Status object that is returned.
+
+TWEETS
+
+1. created_at -- type of post ADDED
+2. entities -- "hashtags":[], "urls":[], "user_mentions":[]
+3. id_str -- will go into the ID column in DB
+4. lang -- language DONE
+5. user -- who twitted this 
+6. favorite_count -- how many times tweet has been liked by users DONE
+7. retweet_count -- how many times the tweet has been retweeted DONE
+8. source -- utility used to post the tweet DONE
+
+USERS
+
+1. created_at -- when the account was created
+2. id_str -- the id for the account
+3. description -- text how users describe themselves
+4. favourites_count -- how many times user has liked something
+5. followers_count
+6. friends_count -- following
+7. lang -- stated user language
+8. location -- self reported location
+9. name -- user's name e.g. John Doe
+10. screen_name -- @...
+11. statuses_count -- how many times user has posted
+12. verified -- Is he a verified user?
+
+
+
+Useful Links:
+Tweets Doc: https://dev.twitter.com/overview/api/tweets
+Users Doc: https://dev.twitter.com/overview/api/users
+Entities Doc: https://dev.twitter.com/overview/api/entities
+
+
+url of the user is: https://twitter.com/basile_vasilis
+
+Need some star schema type DB implementation here.
+
+3 tables at least:
+
+tweets
+
+users
+
+entities
+
+
+
+

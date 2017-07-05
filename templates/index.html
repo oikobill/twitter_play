@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {
+        "packages":["map"],
+        "mapsApiKey": "AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY"
+    });
+
+      // get geo_data from backend
+      geo_data = JSON.parse('{{map_data|safe}}');
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable(geo_data);
+
+        var map = new google.visualization.Map(document.getElementById('map_div'));
+        map.draw(data, {
+          showTooltip: true,
+          showInfoWindow: true
+        });
+      }
+
+    </script>
+  </head>
+
+  <body>
+    <div id="map_div" style="width: 400px; height: 300px"></div>
+  </body>
+</html>
