@@ -2,7 +2,9 @@ from tweepy import StreamListener
 import sqlite3
 import time
 import numpy as np
+import requests
 from google_maps_api import get_geocoordinates
+from get_new_user import get_new_user
 
 
 class Streamer(StreamListener):
@@ -10,8 +12,11 @@ class Streamer(StreamListener):
     conn = sqlite3.connect('tweets.db')
     c = conn.cursor()
 
-    insert_command_tweets = "INSERT INTO tweets(ID, content, created_at, user_id) VALUES(?, ?, ?, ?);"
+    insert_command_tweets = "INSERT INTO tweets(ID, content, created_at, lang, user_id) VALUES(?, ?, ?, ?, ?);"
     insert_command_users = "INSERT INTO users(ID, favourites_count, followers_count, friends_count, location, lat, lon, name, screen_name, statuses_count, verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    insert_command_hashtags = "INSERT INTO hashtags(name) VALUES(?)"
+    insert_command_taggings = "INSERT INTO taggings(tweet_id, hashtag_id, index_start, index_end) VALUES(?, ?, ?, ?)"
+    insert_command_mentions = "INSERT INTO mentions(tweet_id, user_id) VALUES(?, ?)"
 
     def on_status(self, status):
         """Get all the information we need and throw into a DB"""
@@ -31,6 +36,12 @@ class Streamer(StreamListener):
         # add to users relation
         self.add_db_users(user)
 
+        # add taggings
+        self.add_taggings(entities, ID)
+
+        # add mentions
+        self.add_mentions(entities, ID)
+
         print("Tweet detected")
 
         if self.check_db_size():
@@ -42,6 +53,60 @@ class Streamer(StreamListener):
         # If rate has been exceeded then just sleep for 1 hr
         if status_code==88:
             time.sleep(3600)
+
+    def flatten(self, lst):
+            return [i[0] for i in lst]
+
+    def add_mentions(self, entities, tweet_id):
+        user_mentions = entities["user_mentions"]
+
+        for u in user_mentions:
+            user_id = u["id_str"]
+
+            # check if user already exists in the database
+            user_list = self.flatten(self.c.execute("SELECT ID from users;"))
+            if user_id not in user_list:
+                new_user_data = get_new_user(user_id)
+                self.c.execute(self.insert_command_users, new_user_data)
+                
+
+            # insert into the mentions relation
+            self.c.execute(self.insert_command_mentions, (tweet_id, user_id))
+
+        self.conn.commit()
+
+    def add_taggings(self, entities, tweet_id):
+
+        def process_hashtags(hashtag_dict):
+            """Takes in a dictionary of hashtags and returns 
+            (hashtag_name, start_index, end_index)
+            """
+            hashtag_name = "#"+hashtag_dict['text']
+            start_index, end_index = hashtag_dict['indices']
+
+            return hashtag_name, start_index, end_index
+        
+        hashtags_found = []
+
+        for h in entities["hashtags"]:
+            tup = process_hashtags(h)
+            hashtags_found.append(tup)
+
+        for hashtag, index_start, index_end in hashtags_found:
+            hashtag_id = self.add_hashtags(hashtag)
+            self.c.execute(self.insert_command_taggings, (tweet_id, hashtag_id, index_start, index_end))
+
+    def add_hashtags(self, hashtag):
+        """ Looks up a new hashtag on the table and creates one if it does not exist"""
+
+        hashtag_list = list(self.c.execute("SELECT name from hashtags"))
+
+        if not hashtag in self.flatten(hashtag_list):
+            self.c.execute(self.insert_command_hashtags, (hashtag,)) # throws error
+            self.conn.commit()
+
+        return list(self.c.execute("SELECT ID FROM hashtags WHERE name=="+"'"+hashtag+"'"))[0][0]
+
 
     def check_db_size(self):
         """Returns True if number of users is more than 20,000"""

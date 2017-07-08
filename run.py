@@ -12,4 +12,3 @@ stream = tweepy.Stream(auth=api.auth,
 	listener=streamer)
 
 stream.filter(track=['python'])
-
