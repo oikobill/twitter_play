@@ -10,8 +10,8 @@ class Streamer(StreamListener):
     conn = sqlite3.connect('tweets.db')
     c = conn.cursor()
 
-    insert_command_tweets = "INSERT INTO tweets(ID, text, created_at, lang, user_id) VALUES(?, ?, ?, ?, ?);"
-    insert_command_users = "INSERT INTO users(ID, created_at, description, favourites_count, followers_count, friends_count, lang, location, lat, lon, name, screen_name, statuses_count, url, verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    insert_command_tweets = "INSERT INTO tweets(ID, text, created_at, user_id) VALUES(?, ?, ?, ?);"
+    insert_command_users = "INSERT INTO users(ID, favourites_count, followers_count, friends_count, location, lat, lon, name, screen_name, statuses_count, verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
     def on_status(self, status):
         """Get all the information we need and throw into a DB"""
@@ -55,8 +55,6 @@ class Streamer(StreamListener):
     def add_db_users(self, user):
         """Given a particular user, saves his info to a DB"""
         ID = user.id_str
-        created_at = user.created_at
-        description = user.description
         favourites_count = user.favourites_count
         followers_count = user.followers_count
         friends_count = user.friends_count
@@ -65,13 +63,12 @@ class Streamer(StreamListener):
         name = user.name
         screen_name = user.screen_name
         statuses_count = user.statuses_count
-        url = user.url
         verified = user.verified
 
         # make a Google API call to get the data for the lat and lon
         lat, lon = get_geocoordinates(location)
 
-        data = (ID, created_at, description, favourites_count, followers_count, friends_count, lang, location,lat, lon, name, screen_name, statuses_count, url, verified)
+        data = (ID, favourites_count, followers_count, friends_count, location, lat, lon, name, screen_name, statuses_count, verified)
 
         # make sure the user is not already in the DB
         id_list = list(self.c.execute("SELECT ID from users"))
