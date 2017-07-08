@@ -10,7 +10,7 @@ class Streamer(StreamListener):
     conn = sqlite3.connect('tweets.db')
     c = conn.cursor()
 
-    insert_command_tweets = "INSERT INTO tweets(ID, text, created_at, user_id) VALUES(?, ?, ?, ?);"
+    insert_command_tweets = "INSERT INTO tweets(ID, content, created_at, user_id) VALUES(?, ?, ?, ?);"
     insert_command_users = "INSERT INTO users(ID, favourites_count, followers_count, friends_count, location, lat, lon, name, screen_name, statuses_count, verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
     def on_status(self, status):
