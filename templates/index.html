@@ -5,10 +5,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/css/main.css" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link href="../static/css/main.css" rel="stylesheet" type="text/css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>  
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="../static/js/hashtags_graph_fml.js"></script>
 </head>
+
 <body>
 
 <!-- setting up side navigation bar functionality with bootstrap classes -->
@@ -49,36 +54,45 @@
             <div class="well">
                 <div class="logoAndSearchContainer">
                     <div id="custom-search-input">
-                        <div class="input-group col-md-12">
-                            <div class='search_form'>
+                        <div class="icol-md-12">
                             <form action="." method="POST">
-                                <input type="text" class="form-control input-lg" placeholder="Search", name="search_item">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-info btn-lg" type="submit" name="submit">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
-                                </span>
-                            </form>  
-                            </div>                          
+                                <div class="input-group">
+                                  <input type="text" class="form-control input-lg" placeholder="Search", name="search_item">
+                                  <span class="input-group-btn">
+                                      <button class="btn btn-info btn-lg" type="submit" name="submit">
+                                          <i class="glyphicon glyphicon-search"></i>
+                                      </button>
+                                  </span>
+                                </div>
+                            </form>                            
                         </div>
                     </div>  
                 </div>
             </div>
         </div>
-        <!-- setting up graph containers -->
-        <div class="row">
-            <div class="col-sm-4">
-              <div class="well">
-                <h4>Map</h4>
-                <p>Geolocation</p> 
+
+        <!-- setting up add hashtag input -->
+        <div class="col-sm-9">
+          <div class="well">
+              <div class="logoAndSearchContainer">
+                  <div id="custom-search-input">
+                      <div class="icol-md-12">
+                          <div class="input-group">
+                            <input type="text" class="form-control input-lg" placeholder="Search", name="search_item">
+                            <span class="input-group-btn">                           
+                              <button id='hashtag_button' class="btn btn-primary btn-lg" onclick='fml()'>Add Hashtag</button>
+                            </span>
+                         </div>                       
+                      </div>
+                  </div>  
               </div>
-            </div>
-            <div class="col-sm-4">
-              <div class="well">
-                <h4>Hashtags</h4>
-                <p>100 Million</p> 
-              </div>
-            </div>
+          </div>
+        </div>
+
+
+        <!-- setting up hashtags graph -->
+        <div class="col-sm-9">
+            <div id="container_hashtags_graph" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
         </div>
     </div>
 </div>

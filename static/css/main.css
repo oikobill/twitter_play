@@ -11,7 +11,3 @@
 @media screen and (max-width: 767px) {
   .row.content {height: auto;} 
 }
-
-.search_form input{
-  float:left;
-}
