@@ -1,29 +1,52 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load("current", {
-        "packages":["map"],
-        "mapsApiKey": "AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY"
-    });
+    <title>Tweeter Analytics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>         
+    <script src="http://d3js.org/d3.v4.min.js"></script>
+    <style>
 
-      // get geo_data from backend
-      geo_data = JSON.parse('{{map_data|safe}}');
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable(geo_data);
+     <!-- Load c3.css -->
+     <link href="./css/c3.css" rel="stylesheet" type="text/css">
+     <!-- Load d3.js and c3.js -->
+     <script src="https://d3js.org/d3.v4.js"></script>
+     <script src="./js/c3.min.js"></script>
 
-        var map = new google.visualization.Map(document.getElementById('map_div'));
-        map.draw(data, {
-          showTooltip: true,
-          showInfoWindow: true
-        });
-      }
+     .city {display:none;}
+    </style>
+    <body>
 
-    </script>
-  </head>
+        <div class="main">
+            <div class="logoAndSearchContainer">
+                <div class="logo">
+                    <!-- <img src="./img/inquire.png"> -->
+                </div>
+                <div id="custom-search-input">
+                    <div class="input-group col-md-12">
+                        <input type="text" class="form-control input-lg" placeholder="Search" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-info btn-lg" type="button"
+                                    onclick="showResults(event)">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="resultsContainer">
+                <div class="sidemenu">
+                    <nav class="w3-sidenav w3-light-grey w3-card-2" style="width:130px">
+                        <div class="w3-container">
+                            <h3>Baobab</h3>
+                        </div>
+                    </nav>
+                </div>
+            </div>
 
-  <body>
-    <div id="map_div" style="width: 400px; height: 300px"></div>
-  </body>
+    </body>
 </html>

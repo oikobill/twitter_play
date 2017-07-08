@@ -1,0 +1,179 @@
+#custom-search-input{
+    padding: 3px;
+    border: solid 1px #E4E4E4;
+    border-radius: 6px;
+    background-color: #fff;
+    width: 50%;
+    height: 55px;
+}
+
+#custom-search-input input{
+    border: 0;
+    box-shadow: none;
+    width: 90%;
+}
+
+#custom-search-input button{
+    margin: 2px 0 0 0;
+    background: none;
+    box-shadow: none;
+    border: 0;
+    color: #666666;
+    padding: 0 8px 0 10px;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input button:hover{
+    border: 0;
+    box-shadow: none;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input .glyphicon-search{
+    font-size: 23px;
+}
+
+.resultsContainer {
+    display: flex;
+}
+
+.logo {
+    width: 130px;
+}
+
+.logo img {
+    width: 100px;
+    align: center;
+}
+
+.logoAndSearchContainer {
+    display: flex;
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.filterSection {
+    display: flex;
+    flex-direction: column;
+}
+
+.filterContainer {
+    padding-left: 200px;
+    padding-top: 50px;
+}
+
+.menuoption {
+    margin-top: 150px;
+    margin-left: 20px;
+}
+
+.legend {
+    border: 1px solid #555555;
+    border-radius: 5px 5px 5px 5px;
+    font-size: 0.8em;
+    margin: 10px;
+    padding: 8px;
+}
+.bld {
+    font-weight: bold;
+}
+.links line {
+  stroke: #999;
+  stroke-opacity: 0.6;
+}
+.nodes circle {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.queryFilters {
+    display: flex;
+    margin-left: 150px;
+    position: absolute;
+    margin-top: 81px;
+}
+
+.bar{
+fill: steelblue;
+}
+
+.bar:hover{
+fill: brown;
+}
+
+.axis {
+font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+fill: none;
+stroke: #000;
+shape-rendering: crispEdges;
+}
+
+table {
+    margin-left: 40px;
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    display: block; 
+    height: 500px; 
+    overflow-y: scroll;
+}
+td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+#history {
+    padding-right: 30px;
+}
+
+#history td, th {
+    max-width: 200px;
+}
+
+.historyContainer h3 {
+    margin-left: 40px;
+}
+
+.historyContainer {
+    margin-top: 150px;
+    width: 80%;
+    margin-right: 30px;
+}
+
+.queryResultsContainer {
+    margin-left:130px;
+    width:100%;
+    display: flex;
+}
+
+.queryContainer {
+    display: flex;
+    width: 111%;
+}
+
+.text-row:hover {
+    background-color:yellow;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 250px;
+    height: 60px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
