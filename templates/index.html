@@ -11,7 +11,8 @@
   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
-  <script src="../static/js/hashtags_graph_fml.js"></script>
+  <script src="../static/js/http_requests.js?1"></script>
+  <script src="../static/js/tweet_mentions_graph.js"></script>
 </head>
 
 <body>
@@ -55,16 +56,14 @@
                 <div class="logoAndSearchContainer">
                     <div id="custom-search-input">
                         <div class="icol-md-12">
-                            <form action="." method="POST">
-                                <div class="input-group">
-                                  <input type="text" class="form-control input-lg" placeholder="Search", name="search_item">
-                                  <span class="input-group-btn">
-                                      <button class="btn btn-info btn-lg" type="submit" name="submit">
-                                          <i class="glyphicon glyphicon-search"></i>
-                                      </button>
-                                  </span>
-                                </div>
-                            </form>                            
+                            <div class="input-group">
+                              <input id='term_input' type="text" class="form-control input-lg" placeholder="Pick a word to track", name="search_item">
+                              <span class="input-group-btn">
+                                  <button id='hashtag_button' class="btn btn-primary btn-lg" onclick='add_hashtag()'>
+                                      <i class="glyphicon glyphicon-search"></i>
+                                  </button>
+                              </span>
+                            </div>                            
                         </div>
                     </div>  
                 </div>
@@ -72,27 +71,27 @@
         </div>
 
         <!-- setting up add hashtag input -->
-        <div class="col-sm-9">
+        <!-- <div class="col-sm-9">
           <div class="well">
               <div class="logoAndSearchContainer">
                   <div id="custom-search-input">
                       <div class="icol-md-12">
                           <div class="input-group">
-                            <input type="text" class="form-control input-lg" placeholder="Search", name="search_item">
+                            <input id='hashtag_input' type="text" class="form-control input-lg" placeholder="Type a Hashtag">
                             <span class="input-group-btn">                           
-                              <button id='hashtag_button' class="btn btn-primary btn-lg" onclick='fml()'>Add Hashtag</button>
+                              <button id='hashtag_button' class="btn btn-primary btn-lg" onclick='add_hashtag()'>Add Hashtag</button>
                             </span>
                          </div>                       
                       </div>
                   </div>  
               </div>
           </div>
-        </div>
+        </div> -->
 
 
         <!-- setting up hashtags graph -->
         <div class="col-sm-9">
-            <div id="container_hashtags_graph" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+            <div id="container_mentions_graph" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
         </div>
     </div>
 </div>

@@ -1,6 +1,6 @@
 var chart
 var frequency = 5
-var title = ('Hashtag References per '.concat(frequency.toString())).concat(' Seconds')
+var title = ('Tweet Mentions per '.concat(frequency.toString())).concat(' Seconds')
 var repeats = 20
 var max_hashtags = 3
 
@@ -12,9 +12,9 @@ function add_hashtag(){
         for(i = 0; i < repeats; i++) {
             data[i] = [time + i * 1000, 0]
         }
-        var last_hashtag = document.getElementById('hashtag_input').value
+        var last_term = document.getElementById('term_input').value
         chart.addSeries({
-            name: last_hashtag,
+            name: last_term,
             data: data
         });
     }
@@ -31,7 +31,7 @@ $(document).ready(function () {
         // set up graph chart
         chart = new Highcharts.Chart({
             chart: {
-                renderTo: 'container_hashtags_graph',
+                renderTo: 'container_mentions_graph',
                 type: 'spline',
                 animation: Highcharts.svg, // don't animate in old IE
                 marginRight: 10,
@@ -59,7 +59,7 @@ $(document).ready(function () {
             },
             yAxis: {
                 title: {
-                    text: 'Hashtag Count'
+                    text: 'Tweet Mentions Count'
                 },
                 plotLines: [{
                     value: 0,
