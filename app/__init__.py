@@ -1,15 +1,18 @@
 from flask import Flask
 from flask import render_template, jsonify, request
-from google_maps_api import get_geocoordinates
 import sqlite3
 import pandas as pd
 import numpy as np
 import json
 import threading
-from start_streamer import start_streamer
-from create_db import create_db
+
+from app.start_streamer import start_streamer
+from app.api.google_maps_api import get_geocoordinates
 
 app = Flask(__name__)
+
+# Configurations
+app.config.from_object('config')
 
 stream = None
 thread = None
@@ -46,8 +49,6 @@ def get_search_item():
 #     g = [list(i) for i in g]
 #     return g
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
 
 
 

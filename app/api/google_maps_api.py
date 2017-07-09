@@ -1,4 +1,4 @@
-from keys import google_maps_api_key
+from app.keys import google_maps_api_key
 import requests
 
 def get_geocoordinates(location):

@@ -3,8 +3,9 @@ import sqlite3
 import time
 import numpy as np
 import requests
-from google_maps_api import get_geocoordinates
-from get_new_user import get_new_user
+
+from app.api.google_maps_api import get_geocoordinates
+from app.api.get_new_user import get_new_user
 
 class Streamer(StreamListener):
     """My Listener for looking at Twitter"""

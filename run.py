@@ -1,14 +1,4 @@
-import tweepy
-from keys import *
-from Listener import Streamer
+from app import app
 
-auth = tweepy.OAuthHandler(APP_KEY, APP_SECRET)
-auth.set_access_token(TWITTER_KEY,TWITTER_SECRET)
-api = tweepy.API(auth)
-
-streamer = Streamer()
-
-stream = tweepy.Stream(auth=api.auth, 
-	listener=streamer)
-
-stream.filter(track=['python'])
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
