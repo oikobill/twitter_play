@@ -6,6 +6,7 @@ import numpy as np
 import json
 import threading
 from datetime import datetime, timedelta
+import traceback
 
 from app.start_streamer import start_streamer
 from app.api.google_maps_api import get_geocoordinates
@@ -58,21 +59,19 @@ def time_plot(time_window):
         conn = sqlite3.connect("tweets.db")
         c = conn.cursor()
 
-        t = datetime.now() - timedelta(seconds=time_window)
-        part1 = """
-        select COUNT(*)
-        FROM tweets
-        WHERE created_at > DATE('
-        """
-        t = t.strftime('%Y-%m-%d %H:%M:%S')   
-        part2 = """'); """
-        query = part1 + t + part2
+        t = datetime.utcnow() - timedelta(seconds=time_window)
 
-        count = list(c.execute(query))[0][0]
+        time_lst = list(c.execute("SELECT created_at from tweets;"))
+        time_lst = np.array([i[0] for i in time_lst])
+
+        count = str(np.sum(time_lst>t.strftime('%Y-%m-%d %H:%M:%S')))
 
         json_response = {"status":"success", "data":count}
+        conn.close()
     except:
         json_response = {"status":"failure"}
+        traceback.print_exc()
+        conn.close()
 
     return json.dumps(json_response)
 
