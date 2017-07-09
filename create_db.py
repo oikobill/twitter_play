@@ -43,7 +43,7 @@ def create_db():
 				CREATE TABLE IF NOT EXISTS tweets(
 				ID varchar PRIMARY KEY,
 				content varchar NOT NULL,
-				created_at timestamp NOT NULL,
+				created_at datetime NOT NULL,
 				lang varchar NOT NULL,
 				user_id varchar NOT NULL,
 				FOREIGN KEY(user_id) REFERENCES users(ID) ON DELETE CASCADE
