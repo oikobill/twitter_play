@@ -47,9 +47,7 @@ create_table_tweets = """
 create_table_hashtags = """ 
 			CREATE TABLE IF NOT EXISTS hashtags(
 			ID INTEGER PRIMARY KEY autoincrement,
-			name varchar NOT NULL,
-			index_start int NOT NULL,
-			index_end int NOT NULL
+			name varchar NOT NULL
 			)
 			"""
 
@@ -58,6 +56,8 @@ create_table_taggings = """
 			ID INTEGER PRIMARY KEY autoincrement,
 			tweet_id varchar NOT NULL,
 			hashtag_id int NOT NULL,
+			index_start int NOT NULL,
+			index_end int NOT NULL,
 			FOREIGN KEY(hashtag_id) REFERENCES hashtags(ID) ON DELETE CASCADE,
 			FOREIGN KEY(tweet_id) REFERENCES tweets(ID) ON DELETE CASCADE
 			)
