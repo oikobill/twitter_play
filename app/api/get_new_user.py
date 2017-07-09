@@ -6,9 +6,10 @@ try:
     from urllib.parse import urlparse
 except ImportError:
      from urlparse import urlparse
-from keys import *
 import json
-from google_maps_api import get_geocoordinates
+
+from app.keys import *
+from app.api.google_maps_api import get_geocoordinates
 
 # Authentication stuff
 def oauth_req(url, key, secret, http_method="GET", post_body=b"", http_headers=None):
