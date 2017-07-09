@@ -1,5 +1,5 @@
 var chart
-var frequency = 5
+var frequency = 30
 var title = ('Tweet Mentions per '.concat(frequency.toString())).concat(' Seconds')
 var repeats = 20
 var max_terms = 1
@@ -16,7 +16,7 @@ function add_mention(){
 
         // setup chart and initiate server tweet search
         var last_term = document.getElementById('term_input').value
-        // start_search_mentions(last_term)
+        start_search_mentions(last_term)
         chart.addSeries({
             name: last_term,
             data: data
@@ -46,10 +46,10 @@ $(document).ready(function () {
                         setInterval(function () {
                                 for (i = 0; i < series.length; i++) {
                                     var x = (new Date()).getTime(), // current time
-                                        y = Math.random(); //get_tweet_counts(frequency);
+                                        y = get_tweet_counts(frequency); //  //Math.random(); //
                                     series[i].addPoint([x, y], true, true);
                             }
-                        }, 5000);
+                        }, frequency * 1000);
                     }
                 }
             },
