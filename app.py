@@ -26,7 +26,7 @@ def index():
 def get_search_item():
     """ """
     text = request.form['search_item']
-    return text
+    return render_template("index.html")
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
