@@ -1,19 +1,34 @@
 var chart
+var frequency = 5
+var title = ('Hashtag References per '.concat(frequency.toString())).concat(' Seconds')
+var repeats = 20
+var max_hashtags = 3
 
-function fml(){
-    if (chart.series.length === 1) {
-            data = new Array(20)
-        for (i = 0; i < 20; i++) {
-          data[i] = [(new Date()).getTime(), 0]
+// append plot for new hashtag
+function add_hashtag(){
+    if (chart.series.length < max_hashtags) {
+        data = new Array(repeats)
+        time = (new Date()).getTime() - (repeats - 1) * 1000
+        for(i = 0; i < repeats; i++) {
+            data[i] = [time + i * 1000, 0]
         }
+        var last_hashtag = document.getElementById('hashtag_input').value
         chart.addSeries({
-                name: 'Random Data 2',
+            name: last_hashtag,
             data: data
         });
     }
 };
 
 $(document).ready(function () {
+        // enable local time
+        Highcharts.setOptions({
+            global: {
+                useUTC: false
+            }
+        });
+
+        // set up graph chart
         chart = new Highcharts.Chart({
             chart: {
                 renderTo: 'container_hashtags_graph',
@@ -26,24 +41,25 @@ $(document).ready(function () {
                         var series = this.series;
                         setInterval(function () {
                                 for (i = 0; i < series.length; i++) {
-                              var x = (new Date()).getTime(), // current time
-                                  y = Math.random();
-                              series[i].addPoint([x, y], true, true);
+                                    var x = (new Date()).getTime(), // current time
+                                        y = Math.random();
+                                    series[i].addPoint([x, y], true, true);
                             }
-                        }, 1000);
+                        }, 5000);
                     }
                 }
             },
            title: {
-                text: 'Live random data'
+                text: title
             },
             xAxis: {
+                text: 'Time',
                 type: 'datetime',
                 tickPixelInterval: 150
             },
             yAxis: {
                 title: {
-                    text: 'Value'
+                    text: 'Hashtag Count'
                 },
                 plotLines: [{
                     value: 0,
@@ -54,49 +70,14 @@ $(document).ready(function () {
             },
             tooltip: {
                 formatter: function () {
-                    return '<b>' + this.series.name + '</b><br/>' +
-                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                        Highcharts.numberFormat(this.y, 2);
+                    return '<b>' + this.series.name + ': </b>' + Highcharts.numberFormat(this.y, 2);
                 }
-            },
-            legend: {
-                enabled: true
             },
             exporting: {
                 enabled: false
             },
-            series: [{
-                name: 'Random data',
-                data: (function () {
-                    // generate an array of random data
-                    var data = [],
-                        time = (new Date()).getTime(),
-                        i;
-
-                    for (i = -19; i <= 0; i += 1) {
-                        data.push({
-                            x: time + i * 1000,
-                            y: 0
-                        });
-                    }
-                    return data;
-                }())
-            }]
+            series: []
         });
-        // the button handler
-        function fml(){
-            console.log('fml')
-            if (chart.series.length === 1) {
-                    data = new Array(20)
-                for (i = 0; i < 20; i++) {
-                  data[i] = [(new Date()).getTime(), 0]
-                }
-                chart.addSeries({
-                        name: 'Random Data 2',
-                    data: data
-                });
-            }
-        };
     });
 
 
