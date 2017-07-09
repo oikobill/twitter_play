@@ -2,7 +2,10 @@
 from __future__ import unicode_literals
 import requests
 import oauth2
-from urllib.parse import parse_qs
+try:
+    from urllib.parse import urlparse
+except ImportError:
+     from urlparse import urlparse
 from keys import *
 import json
 from google_maps_api import get_geocoordinates
