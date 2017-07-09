@@ -6,11 +6,8 @@ import requests
 from google_maps_api import get_geocoordinates
 from get_new_user import get_new_user
 
-
 class Streamer(StreamListener):
     """My Listener for looking at Twitter"""
-    conn = sqlite3.connect('tweets.db')
-    c = conn.cursor()
 
     insert_command_tweets = "INSERT INTO tweets(ID, content, created_at, lang, user_id) VALUES(?, ?, ?, ?, ?);"
     insert_command_users = "INSERT INTO users(ID, favourites_count, followers_count, friends_count, location, lat, lon, name, screen_name, statuses_count, verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
@@ -58,24 +55,30 @@ class Streamer(StreamListener):
             return [i[0] for i in lst]
 
     def add_mentions(self, entities, tweet_id):
+        conn = sqlite3.connect('tweets.db')
+        c = conn.cursor()
+
         user_mentions = entities["user_mentions"]
 
         for u in user_mentions:
             user_id = u["id_str"]
 
             # check if user already exists in the database
-            user_list = self.flatten(self.c.execute("SELECT ID from users;"))
+            user_list = self.flatten(c.execute("SELECT ID from users;"))
             if user_id not in user_list:
                 new_user_data = get_new_user(user_id)
-                self.c.execute(self.insert_command_users, new_user_data)
+                c.execute(self.insert_command_users, new_user_data)
                 
 
             # insert into the mentions relation
-            self.c.execute(self.insert_command_mentions, (tweet_id, user_id))
+            c.execute(self.insert_command_mentions, (tweet_id, user_id))
 
-        self.conn.commit()
+        conn.commit()
+        conn.close()
 
     def add_taggings(self, entities, tweet_id):
+        conn = sqlite3.connect('tweets.db')
+        c = conn.cursor()
 
         def process_hashtags(hashtag_dict):
             """Takes in a dictionary of hashtags and returns 
@@ -94,31 +97,49 @@ class Streamer(StreamListener):
 
         for hashtag, index_start, index_end in hashtags_found:
             hashtag_id = self.add_hashtags(hashtag)
-            self.c.execute(self.insert_command_taggings, (tweet_id, hashtag_id, index_start, index_end))
+            c.execute(self.insert_command_taggings, (tweet_id, hashtag_id, index_start, index_end))
+        
+        conn.close()
 
     def add_hashtags(self, hashtag):
         """ Looks up a new hashtag on the table and creates one if it does not exist"""
 
-        hashtag_list = list(self.c.execute("SELECT name from hashtags"))
+        conn = sqlite3.connect('tweets.db')
+        c = conn.cursor()
+
+        hashtag_list = list(c.execute("SELECT name from hashtags"))
 
         if not hashtag in self.flatten(hashtag_list):
-            self.c.execute(self.insert_command_hashtags, (hashtag,)) # throws error
-            self.conn.commit()
+            c.execute(self.insert_command_hashtags, (hashtag,)) # throws error
+            conn.commit()
 
-        return list(self.c.execute("SELECT ID FROM hashtags WHERE name=="+"'"+hashtag+"'"))[0][0]
-
+        lst  = list(c.execute("SELECT ID FROM hashtags WHERE name=="+"'"+hashtag+"'"))[0][0]
+        conn.close()
+        return lst
 
     def check_db_size(self):
         """Returns True if number of users is more than 20,000"""
-        return list(self.c.execute("SELECT COUNT(*) FROM users"))[0][0]>20000
+        conn = sqlite3.connect('tweets.db')
+        c = conn.cursor()
+
+        lst = list(c.execute("SELECT COUNT(*) FROM users"))[0][0]>20000
+
+        conn.close()
+        return lst
 
     def add_db_tweets(self, data):
         """Given a row of data, adds it to the tweets DB"""
-        self.c.execute(self.insert_command_tweets, data)
-        self.conn.commit()
+        conn = sqlite3.connect('tweets.db')
+        c = conn.cursor()
+        c.execute(self.insert_command_tweets, data)
+        conn.commit()
+        conn.close()
 
     def add_db_users(self, user):
         """Given a particular user, saves his info to a DB"""
+        conn = sqlite3.connect('tweets.db')
+        c = conn.cursor()
+
         ID = user.id_str
         favourites_count = user.favourites_count
         followers_count = user.followers_count
@@ -136,9 +157,10 @@ class Streamer(StreamListener):
         data = (ID, favourites_count, followers_count, friends_count, location, lat, lon, name, screen_name, statuses_count, verified)
 
         # make sure the user is not already in the DB
-        id_list = list(self.c.execute("SELECT ID from users"))
+        id_list = list(c.execute("SELECT ID from users"))
 
         if not ID in np.array(id_list).flatten():
-            self.c.execute(self.insert_command_users, data)
-            self.conn.commit()
+            c.execute(self.insert_command_users, data)
+            conn.commit()
 
+        conn.close()
