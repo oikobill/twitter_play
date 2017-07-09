@@ -29,20 +29,21 @@ def start_streamer(search_term):
 
     stream.filter(track=[search_term])
 
-# Create new threads
-d = threading.Thread(target=start_streamer, args=("the",))
-d.start()
+def fml():
+    # Create new threads
+    d = threading.Thread(target=start_streamer, args=("the",))
+    d.start()
 
 
-for i in range(100):
+    for i in range(100):
 
-    print("STEP 1")
+        print("STEP 1")
 
-    if time.time()-start_time>40:
-        stop=True
-    time.sleep(0.5)
-    if stop:
-        stream.disconnect()
-        break
+        if time.time()-start_time>20:
+            stream.disconnect()
+            d.exit()
+            break
 
-print ("Exited!")
+        time.sleep(0.5)
+
+    print ("Exited!")

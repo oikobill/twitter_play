@@ -77,8 +77,6 @@ class Streamer(StreamListener):
         conn.close()
 
     def add_taggings(self, entities, tweet_id):
-        conn = sqlite3.connect('tweets.db')
-        c = conn.cursor()
 
         def process_hashtags(hashtag_dict):
             """Takes in a dictionary of hashtags and returns 
@@ -97,9 +95,10 @@ class Streamer(StreamListener):
 
         for hashtag, index_start, index_end in hashtags_found:
             hashtag_id = self.add_hashtags(hashtag)
+            conn = sqlite3.connect('tweets.db')
+            c = conn.cursor()
             c.execute(self.insert_command_taggings, (tweet_id, hashtag_id, index_start, index_end))
-        
-        conn.close()
+            conn.close()
 
     def add_hashtags(self, hashtag):
         """ Looks up a new hashtag on the table and creates one if it does not exist"""
